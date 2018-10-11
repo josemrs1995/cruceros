@@ -66,3 +66,69 @@ if( function_exists('acf_add_options_page') ) {
 	acf_add_options_page('opciones');
 	
 }
+
+////
+// Our custom post type function
+function create_posttype() {
+ 
+    register_post_type( 'cruceros',
+    // CPT Options
+        array(
+            'labels' => array(
+                'name' => __( 'Cruceros' ),
+                'singular_name' => __( 'crucero' )
+            ),
+            'public' => true,
+            'has_archive' => true,
+            'taxonomies'          => array( 'navieras' ),
+            'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
+            'rewrite' => array('slug' => 'cruceros'),
+        )
+    );
+
+    ////
+    $labels = array( //labels para las taxonomia de
+        'name' => _x( 'Navieras', 'taxonomy general name' ),
+        'singular_name' => _x( 'Naviera', 'taxonomy singular name' ),
+        'search_items' =>  __( 'Buscar Navieras' ),
+        'all_items' => __( 'Todas las Navieras' ),
+        'edit_item' => __( 'Editar Naviera' ), 
+        'update_item' => __( 'Actualizar Naviera' ),
+        'add_new_item' => __( 'Agregar nueva Naviera' ),
+        'new_item_name' => __( 'Nombre de la nueva Naviera' ),
+        'menu_name' => __( 'Navieras' ),
+      ); 
+
+    register_taxonomy('navieras',array('cruceros'), array(
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => array( 'slug' => 'navieras' ),
+      ));
+
+      /// categoria de destinos 
+    $labels = array( //labels para las taxonomia de
+        'name' => _x( 'Destinos', 'taxonomy general name' ),
+        'singular_name' => _x( 'Destino', 'taxonomy singular name' ),
+        'search_items' =>  __( 'Buscar Destinos' ),
+        'all_items' => __( 'Todas las Destinos' ),
+        'edit_item' => __( 'Editar Destino' ), 
+        'update_item' => __( 'Actualizar Destino' ),
+        'add_new_item' => __( 'Agregar nueva Destino' ),
+        'new_item_name' => __( 'Nombre de la nueva Destino' ),
+        'menu_name' => __( 'Destinos' ),
+      ); 
+
+    register_taxonomy('destinos',array('cruceros'), array(
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => array( 'slug' => 'destinos' ),
+      ));
+}
+// Hooking up our function to theme setup
+add_action( 'init', 'create_posttype' );
